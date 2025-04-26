@@ -571,6 +571,9 @@ const char * const trampPowerNames_5G8_600[VTX_TRAMP_5G8_MAX_POWER_COUNT + 1] = 
 
 const uint16_t trampPowerTable_5G8_800[VTX_TRAMP_5G8_MAX_POWER_COUNT]         = { 25, 100, 200, 500, 800 };
 const char * const trampPowerNames_5G8_800[VTX_TRAMP_5G8_MAX_POWER_COUNT + 1] = { "---", "25 ", "100", "200", "500", "800" };
+// Mod For BLITZ 1.6W
+const uint16_t trampPowerTable_5G8_1600[VTX_TRAMP_5G8_MAX_POWER_COUNT]         = { 25, 400, 800, 1600, 1600};
+const char * const trampPowerNames_5G8_1600[VTX_TRAMP_5G8_MAX_POWER_COUNT +1 ] = { "---", "25 ", "400", "800", "1600" };
 
 const uint16_t trampPowerTable_1G3_800[VTX_TRAMP_1G3_MAX_POWER_COUNT]         = { 25, 200, 800 };
 const char * const trampPowerNames_1G3_800[VTX_TRAMP_1G3_MAX_POWER_COUNT + 1] = { "---", "25 ", "200", "800" };
@@ -602,7 +605,15 @@ static void vtxProtoUpdatePowerMetadata(uint16_t maxPower)
             impl_vtxDevice.capability.channelNames = (char **)vtx1G3ChannelNames;
             break;
         default:
-            if (maxPower >= 800) {
+           if (maxPower >= 1600) {
+                // Mod IFLIGHT BLITZ 1.6W Max power 1600mW: Use 25, 400, 800, 1600 table
+                vtxState.metadata.powerTablePtr  = trampPowerTable_5G8_1600;
+                vtxState.metadata.powerTableCount = 4;
+                
+                impl_vtxDevice.capability.powerNames = (char **)trampPowerNames_5G8_1600;
+                impl_vtxDevice.capability.powerCount = 4;
+            }
+            else if (maxPower >= 800) {
                 // Max power 800mW: Use 25, 100, 200, 500, 800 table
                 vtxState.metadata.powerTablePtr  = trampPowerTable_5G8_800;
                 vtxState.metadata.powerTableCount = VTX_TRAMP_5G8_MAX_POWER_COUNT;
